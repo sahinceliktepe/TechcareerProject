@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Techcareer.Web.Models.Post>
+
+@{
+    ViewData["Title"] = "Homepage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Posts</h1>
+
+<div class="row">
+    <div class="col-8">
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Create New Post</a>
+        </p>
+    </div>
+    <div class="col-4">
+        <form asp-action="Index" method="get">
+            <div class="form-group">
+                <input type="text" name="searchString" value="" placeholder="Search By Title"/>
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th style="display:none;">
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td style="display:none;">
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                    @{
+                        string titleValue = item.Title.Length > 30 ? item.Title.ToString().Substring(0, 30) : item.Title.ToString();
+                    }
+
+                @Html.DisplayFor(modelItem => titleValue)
+            </td>
+            <td>
+                 @{
+                    string bodyValue = item.Body.Length>75? item.Body.ToString().Substring(0, 75):item.Body.ToString();
+                  }
+
+                @Html.DisplayFor(modelItem => bodyValue)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id  },new{@class="btn btn-warning"}) 
+                @Html.ActionLink("Detail", "Detail", new { id=item.Id },new{@class="btn btn-info"}) 
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id },new{@class="btn btn-danger"})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
